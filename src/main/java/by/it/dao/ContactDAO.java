@@ -5,13 +5,11 @@ import by.it.entities.Contact;
 import java.util.List;
 
 public interface ContactDAO {
-    int save(Contact contact);
+    void saveOrUpdate(Contact contact);
 
-    int update(Contact contact);
+    void delete(int contactId);
 
-    Contact getContact(Integer id);
+    Contact get(int contactId);
 
-    int delete(Integer id);
-
-    List<Contact> getContactsList();
+    List<Contact> list();
 }

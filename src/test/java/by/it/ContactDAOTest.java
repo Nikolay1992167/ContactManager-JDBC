@@ -6,20 +6,18 @@ import by.it.entities.Contact;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.swing.tree.TreePath;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class ContactDAOTest {
     private DriverManagerDataSource dataSource;
+    @Autowired
     private ContactDAO dao;
 
     @BeforeEach
-    void setupBeforeEach(){
+    void setupBeforeEach() {
         dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/first_db");
@@ -28,45 +26,42 @@ public class ContactDAOTest {
 
         dao = new ContactDAOImpl(dataSource);
     }
+
     @Test
     void testSave() {
         Contact contact = new Contact("Steve Jobs", "steve@apple.com", "Cupertino, CA", "763847682642");
-        int result = dao.save(contact);
-
-        Assertions.assertTrue(result > 0);
+        dao.saveOrUpdate(contact);
+        Assertions.assertTrue(contact.getId() > 0);
     }
 
     @Test
     void testUpdate() {
         Contact contact = new Contact(1, "Mikola", "steve@apple.com", "Stancia, Street", "763847682642");
-        int result = dao.update(contact);
-
-        Assertions.assertTrue(result > 0);
+        dao.saveOrUpdate(contact);
+        String phone = "763847682642";
+        Assertions.assertEquals(phone, contact.getTelephone());
     }
 
     @Test
     void testGet() {
-        Integer id = 1;
-        Contact contact = dao.getContact(id);
-        if (contact != null){
-            System.out.println(contact);
-        }
+        int id = 1;
+        Contact contact = dao.get(id);
         Assertions.assertNotNull(contact);
     }
 
     @Test
     void testDelete() {
         Integer id = 2;
-        int result = dao.delete(id);
-        Assertions.assertTrue(result>0);
+        dao.delete(id);
+        Assertions.assertNull(dao.get(id));
     }
 
     @Test
     void testList() {
-        List<Contact> contactList = dao.getContactsList();
-        for (Contact contact: contactList){
+        List<Contact> contactList = dao.list();
+        for (Contact contact : contactList) {
             System.out.println(contact);
         }
-        Assertions.assertTrue(!contactList.isEmpty());
+        Assertions.assertFalse(contactList.isEmpty());
     }
 }

@@ -13,14 +13,17 @@ repositories {
 dependencies {
     implementation 'org.springframework:spring-context:6.0.9'
     implementation 'org.springframework:spring-webmvc:6.0.9'
+
     implementation 'org.springframework:spring-orm:6.0.9'
     implementation 'javax.servlet:jstl:1.2'
     implementation 'org.postgresql:postgresql:42.6.0'
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-
+    implementation 'jstl:jstl:1.2'
+    implementation 'javax.servlet:jstl:1.2'
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
     compileOnly 'org.projectlombok:lombok:1.18.28'
+    runtimeOnly 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
